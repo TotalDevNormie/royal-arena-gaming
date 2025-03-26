@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { relations, sql } from "drizzle-orm";
 import { index, primaryKey, sqliteTableCreator } from "drizzle-orm/sqlite-core";
 import { type AdapterAccount } from "next-auth/adapters";
@@ -8,7 +9,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = sqliteTableCreator((name) => `trash_${name}`);
+export const createTable = sqliteTableCreator((name) => `royal-arena-gaming_${name}`);
 
 export const posts = createTable(
   "post",
@@ -41,9 +42,8 @@ export const users = createTable("user", (d) => ({
   email: d.text({ length: 255 }).notNull(),
   emailVerified: d.integer({ mode: "timestamp" }).default(sql`(unixepoch())`),
   image: d.text({ length: 255 }),
-}));
-
-export const usersRelations = relations(users, ({ many }) => ({
+  password: d.text().notNull().$defaultFn(() => sql`${bcrypt.hashSync(crypto.randomUUID(), 10)}`),
+}));export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
 }));
 

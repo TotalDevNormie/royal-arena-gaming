@@ -8,5 +8,5 @@ export default {
   dbCredentials: {
     url: env.DATABASE_URL,
   },
-  tablesFilter: ["trash_*"],
+  tablesFilter: ["royal_arena_gaming_*"],
 } satisfies Config;
